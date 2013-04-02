@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"name": "Processing Tools Root"
+		},
+		{
+			"path": "./bootstrap",
+			"name": "Bootstrap"
+		},
+		{
+			"path": "./templater",
+			"name" :"Templater"
+		}
+	]
+}
