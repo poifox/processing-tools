@@ -11,7 +11,14 @@
 		},
 		{
 			"path": "./templater",
-			"name" :"Templater"
+			"name": "Templater"
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name": "Build Processing Tools",
+			"cmd": [ "ant", "-f", "$project_path/bootstrap/resources/build.xml"]
 		}
 	]
 }
