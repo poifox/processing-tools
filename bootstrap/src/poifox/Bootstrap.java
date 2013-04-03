@@ -25,25 +25,26 @@
 
 package poifox;
 
-// processing imports
+// processing
 import processing.app.*;
 import processing.app.tools.*;
 
-// java imports
-import java.io.BufferedInputStream;
+// file io
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-//import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 
+// ui
 import javax.swing.JOptionPane;
 
+// util
 import java.util.ArrayList;
 
 /**
@@ -54,27 +55,65 @@ import java.util.ArrayList;
  */
 public class Bootstrap implements Tool {
 
+	/**
+	 * Gets it from PDE
+	 */
 	private Editor editor;
+
+	/**
+	 * Read from the system config, for portability
+	 */
 	private String fs;
-	private String defTemplate;
-	private String templatesPath;
-	private File skbkPath;
+
+	/**
+	 * default template Path
+	 */
+	private String defaultTemplate;
+
+	/**
+	 * Path to the sketchbook root
+	 */
+	private File sketchbookPath;
+
+	/**
+	 * Path to the templates folder inside the Sketchbook
+	 */
 	private File templatesFolder;
+
+	/**
+	 * Tool's data folder, here until next notice
+	 */
 	private File dataFolder;
+
+	/**
+	 * holds the list of all .txt templates available in templatesFolder
+	 */
 	private ArrayList<File> allTemplates;
 
+	/**
+	 * Returns the Menu Item string for the Processing "Tools" menu
+	 * Required by the Tool Inteface
+	 * @return the string "Bootstrap"
+	 */
 	public String getMenuTitle() {
 		return "Bootstrap";
 	}
 
+	/**
+	 * Runs the first time the tool is run on 
+	 * @param theEditor [description]
+	 */
 	public void init(Editor theEditor) {
 		editor = theEditor;
 		fs = System.getProperty("file.separator");
-		defTemplate = "default.txt";
+		defaultTemplate = "default.txt";
 		initTemplatesRoot();
 		allTemplates = new ArrayList<File>();
 	}
 
+	/**
+	 * Does all the actual business logic of the tool.
+	 */
 	public void run() {
 		loadTemplates();
 		if ( allTemplates.size() > 0 ) {
@@ -86,60 +125,70 @@ public class Bootstrap implements Tool {
 		} else {
 			JOptionPane
 			.showMessageDialog(
-					editor.getContentPane(),
-					(Object) "Woops!"
-							+ "\nLooks like you don't have any templates!\n"
-							+ "Please put some .txt templates in your sketchbook:\n"
-							+ skbkPath
-							+ templatesPath,
-					getMenuTitle(), JOptionPane.ERROR_MESSAGE);
+				editor.getContentPane(),
+				(Object) "Looks like you don't have any templates!\n"
+				+ "Please put some \".txt\" templates in your sketchbook here:\n"
+				+ templatesFolder.getAbsolutePath(),
+				getMenuTitle(), JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
+	/**
+	 * Presents the template selection menu.
+	 * Called when there are more two or more templates in templatesFolder
+	 */
 	private void offerMenu() {
 		Object[] templateNames = new Object[ allTemplates.size() ];
 		for ( int i = 0 ; i < allTemplates.size(); i++ ) {
 			templateNames[i] = allTemplates.get( i ).getName();
 		}
-		Object selTemplate;
-		selTemplate = JOptionPane.showInputDialog(
-				editor.getContentPane(),
-				(Object) "Select the template to use:",
-				getMenuTitle(),
-				JOptionPane.OK_CANCEL_OPTION,
-				null,
-				templateNames,
-				templateNames[0]);
-		System.err.println(selTemplate);
-		if ( null == selTemplate ) {
-			System.out.println("Canceled bootstrap action...");
+		Object selectedTemplate;
+		selectedTemplate = JOptionPane.showInputDialog(
+			editor.getContentPane(),
+			(Object) "Select the template to use:",
+			getMenuTitle(),
+			JOptionPane.QUESTION_MESSAGE,
+			null,
+			templateNames,
+			templateNames[0]
+			);
+		if ( null == selectedTemplate ) {
+			// flush allTemplates on cancel
+			allTemplates.clear();
 			return;
 		}
 		for ( int j = 0 ; j < allTemplates.size() ; j++ ) {
-			if ( allTemplates.get(j).getAbsolutePath().endsWith(selTemplate.toString()) ) {
+			if ( allTemplates.get(j).getAbsolutePath().endsWith(selectedTemplate.toString()) ) {
 				initialize( allTemplates.get(j) );
 				return;
 			}
 		}
-		JOptionPane
-		.showMessageDialog(
-				editor.getContentPane(),
-				(Object) "Woops! Something went wrong while loading this template!\n",
-				getMenuTitle(), JOptionPane.ERROR_MESSAGE);
+		System.err.println("BAM! YOU SHOULD NOT BE LOOKING AT THIS MESSAGE!"
+			+ "\nPlease report you saw this to jonathan@poifox.com.");
 	}
 	
+	/**
+	 * Populates the sketch text with the selected template file
+	 * @param templateFile [description]
+	 */
 	private void initialize( File templateFile ) {
 		String templateContent;
 		templateContent = loadString( templateFile.getAbsolutePath() );
-		
+		// insert text goes to where the cursor is.
 		editor.insertText( templateContent );
 		editor.statusNotice("Sketch initialized with \""+ templateFile.getName() + "\". To work!" );
 		if ( 1 == allTemplates.size() ) {
-			System.out.println("You can have as many templates as you like in " + skbkPath );
+			System.out.println("Remember you can have any number of templates in:\n" 
+				+ templatesFolder.getAbsolutePath() );
 		}
+		// always flush allTemplates after initializing
 		allTemplates.clear();
 	}
 	
+	/**
+	 * Loads the list of available templates onto the allTemplates List
+	 * @return [description]
+	 */
 	private void loadTemplates() {
 		String filePath;
 		File[] templates = templatesFolder.listFiles();
@@ -152,27 +201,29 @@ public class Bootstrap implements Tool {
 	}
 
 	/**
-	 * Figures out where the templates root is and stores it in templatesPath
+	 * Figures out where the templates root is and stores it in templatesFolder
 	 * for later usage
 	 */
 	private void initTemplatesRoot() {
-		skbkPath = new File(Preferences.get("sketchbook.path"));
-		dataFolder = new File( skbkPath + fs + "tools" + fs + "Bootstrap" + fs + "data" );
-		templatesPath = skbkPath.getAbsolutePath() + fs + "templates";
-		templatesFolder = new File(templatesPath);
+		sketchbookPath = new File(Preferences.get("sketchbook.path"));
+		dataFolder = new File( sketchbookPath + fs + "tools" + fs + "Bootstrap" + fs + "data" );
+		templatesFolder = new File( sketchbookPath.getAbsolutePath() + fs + "templates" );
 		if ( ! templatesFolder.exists()) {
 			createTemplatesFolder();
 		}
 	}
 
+	/**
+	 * Creates the templates folder inside of sketchbookPath if it's not there
+	 */
 	private void createTemplatesFolder() {
 		JOptionPane
 				.showMessageDialog(
 						editor.getContentPane(),
 						(Object) "The templates folder was not found"
 								+ "\na new templates folder will be created for you in:\n"
-								+ templatesPath,
-						getMenuTitle(), JOptionPane.ERROR_MESSAGE);
+								+ templatesFolder.getAbsolutePath(),
+						getMenuTitle(), JOptionPane.INFORMATION_MESSAGE);
 		if (templatesFolder.mkdir()) {
 			boolean executable = templatesFolder.setExecutable(true);
 			boolean readable = templatesFolder.setReadable(true);
@@ -182,12 +233,12 @@ public class Bootstrap implements Tool {
 				System.out.println("You can add .txt files inside to grow your templates collection");
 			}
 			// TODO when question is answered turn this on
-//			try {
-//				installDefaultTemplate();
-//				editor.statusNotice("Installed default.txt");
-//			} catch (Exception e) {
-//				System.err.println("Error while installing default.txt template!");
-//			}
+			// try {
+			// 	installDefaultTemplate();
+			// 	editor.statusNotice("Installed default.txt");
+			// } catch (Exception e) {
+			// 	System.err.println("Error while installing default.txt template!");
+			// }
 		} else {
 			JOptionPane
 					.showMessageDialog(
@@ -199,24 +250,33 @@ public class Bootstrap implements Tool {
 		}
 	}
 
+	/**
+	 * Installs default template to templatesFolder if the default template is not there yet.
+	 * Inactive for now as there's something in the API kinda funky
+	 * @throws IOException [description]
+	 */
 	private void installDefaultTemplate() throws IOException {
-		String dataTemplate = templatesFolder.getAbsolutePath() + fs + defTemplate;
-		File installTemplate = new File(dataTemplate);
-		if ( ! installTemplate.exists() ) {
-			File defaultTemplate = new File( dataFolder.getAbsolutePath() + fs + defTemplate );
-			System.out.println(defaultTemplate.getAbsolutePath());
-			InputStream inStream = new FileInputStream( defaultTemplate.getAbsolutePath() );
-			OutputStream outStream = new FileOutputStream( installTemplate.getAbsolutePath() );
-			byte[] outBytes = new byte[1024];
-			int nLength;
-			BufferedInputStream buffer = new BufferedInputStream( inStream );
-			while ( ( nLength = buffer.read(outBytes) ) > 0 ) {
-				outStream.write( outBytes, 0, nLength );
-			}
-			inStream.close();
-			outStream.close();
-		}
+		// String dataTemplate = templatesFolder.getAbsolutePath() + fs + defaultTemplate;
+		// File installTemplate = new File(dataTemplate);
+		// if ( ! installTemplate.exists() ) {
+		// 	File defaultTemplate = new File( dataFolder.getAbsolutePath() + fs + defaultTemplate );
+		// 	System.out.println(defaultTemplate.getAbsolutePath());
+		// 	InputStream inStream = new FileInputStream( defaultTemplate.getAbsolutePath() );
+		// 	OutputStream outStream = new FileOutputStream( installTemplate.getAbsolutePath() );
+		// 	byte[] outBytes = new byte[1024];
+		// 	int nLength;
+		// 	BufferedInputStream buffer = new BufferedInputStream( inStream );
+		// 	while ( ( nLength = buffer.read(outBytes) ) > 0 ) {
+		// 		outStream.write( outBytes, 0, nLength );
+		// 	}
+		// 	inStream.close();
+		// 	outStream.close();
+		// }
 	}
+
+	/***********************************************************************************************
+	 * This section is inherited from suggestions on the processing-templates repository
+	 **********************************************************************************************/
 
 	/**
 	 * load a text file from the data folder or an absolute path.
@@ -224,7 +284,7 @@ public class Bootstrap implements Tool {
 	 * @param theFilename
 	 * @return
 	 */
-	public String loadString(String theFilename) {
+	public String loadString( String theFilename ) {
 		InputStream is = null;
 		if (theFilename.startsWith(File.separator)) {
 			try {

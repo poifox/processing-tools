@@ -1,4 +1,4 @@
-<project name="Bootstrap" default="clean" basedir="../">
+<project name="Templater" default="clean" basedir="../">
 
     
 <!--	
