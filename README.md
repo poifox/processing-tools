@@ -2,19 +2,21 @@
 
 These processing tools are meant to help [Processing](http://processing.org) based coders to get their work done quicker with a couple of simple utilities:
 
-## Bootstrap:
+## [Bootstrap](http://poifox.com/bootstrap):
 
 The Bootstrap tool for Processing 2.0+ lets coders load a predefined template to their current Processing sketch as a base for further coding, removing the tedious process of writing base Procesing style code like setup(), draw() and more. Bootstrap superceedes the old InitSketch tool, and build upon the original code with better coding style and encapsulation.
 
 Bootstrap goes along very well with this other tool:
 
-## Templater:
+## [Templater](http://poifox.com/templater):
 
 The Templater tool for Processing 2.0+ is the perfect companion for Bootstrap. It allows the coder to save the currently visible sketch as a template in the templates folder, which can then be used by Bootstrap to initialize sketches with different templates. Templater superceedes the old SaveTemplate tool, and builds upon the original code with better coding style and encapsulation.
 
 ### Instructions:
 
-Detailed instructions on [the wiki](https://github.com/poifox/processing-tools/wiki)
+Detailed instructions on [Bootstrap](http://poifox.com/bootstrap)'s and [Templater](http://poifox.com/templater)'s' mini-sites.
+
+---
 
 ### Future:
 
