@@ -8,3 +8,7 @@
 
 # Other files
 *.sublime-workspace
+
+
+# Eclipse files:
+bootstrap/distribution/

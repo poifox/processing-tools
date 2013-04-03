@@ -1,0 +1,20 @@
+// InitSketch Default template by Jonathan Acosta.
+int scroll = 340;
+
+void setup() {
+  size( 300, 300 );
+  smooth();
+  textAlign( CENTER, CENTER );
+}
+
+void draw() {
+  background(100);
+  text( "InitSketch!", scroll, height/2 );
+  scroll--;
+  if ( scroll < -40 ) scroll = 340;
+}
+
+void keyPressed() {
+  // Catch the ESC key
+  if ( keyCode == ESC ) key = 0;
+}
