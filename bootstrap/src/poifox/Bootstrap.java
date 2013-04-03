@@ -96,7 +96,7 @@ public class Bootstrap implements Tool {
 	 * @return the string "Bootstrap"
 	 */
 	public String getMenuTitle() {
-		return "Bootstrap";
+		return "Bootstrap: init sketch";
 	}
 
 	/**
