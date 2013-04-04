@@ -1,7 +1,7 @@
 /**
- * you can put a one sentence description of your tool here.
+ * Templater. Save your current sketch as a template for future re-use.
  *
- * ##copyright##
+ * Copyright 2013, Jonathan Acosta. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author		##author##
- * @modified	##date##
- * @version		##version##
+ * @author		JOnathan Acosta
+ * @modified	April 2nd 2013
+ * @version		1.0
  */
 
 package poifox;
