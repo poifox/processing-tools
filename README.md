@@ -23,3 +23,9 @@ Detailed instructions on [Bootstrap](http://poifox.com/bootstrap)'s and [Templat
 These tools are pretty much set in their ways, some maintenance fixes will be done in the future but not much will change with them. I initially coded them to behave _exactly_ like they do and they were of good use while I was a raging Processing user. Now I spend most of my time writing PHP and C++ and I don't see myself going back to P5, but I will give maintenance to them when needed :)
 
 If you have improvements you'd like to submit please feel free to fork this repository and send me your pull requests with your changes for everybody else to enjoy!
+
+### Change Log:
+
+1.01 - Maintenance release for processing.org standards compliance.
+
+1.0 - Re-release of the tools under new project names.
