@@ -17,8 +17,12 @@
 	"build_systems":
 	[
 		{
-			"name": "Build Processing Tools",
+			"name": "Build Bootstrap",
 			"cmd": [ "ant", "-f", "$project_path/bootstrap/resources/build.xml"]
+		},
+		{
+			"name": "Build Templater",
+			"cmd": [ "ant", "-f", "$project_path/templater/resources/build.xml"]
 		}
 	]
 }

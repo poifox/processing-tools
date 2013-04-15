@@ -16,6 +16,18 @@ The Templater tool for Processing 2.0+ is the perfect companion for Bootstrap. I
 
 Detailed instructions on [Bootstrap](http://poifox.com/bootstrap)'s and [Templater](http://poifox.com/templater)'s' mini-sites.
 
+### Building
+
+These tools have been built successfuly on Ubuntu 12.10 and Mac OS 10.6.8 using the ant build. There are two build systems setup already for them in the processing-tools.sublime-project file for those fond of Sublime Text 2.
+
+To build them just `cd processing-tools/toolname/resources` and run ant on each tool:
+
+`ant -f build.xml`
+
+The tools are already setup for Eclipse, but classpaths may fail on Mac OS X and/or Windows because the project was setup on my Ubuntu machine where Processing is installed on `/opt/processing`
+
+A quick change of the `classpath.local.location` property in each `build.properties` file so they point to the correct classpath for `pde.jar` and `core.jar` is enough for ant to build them successfully (on Mac OS X 10.6.8 and with `project.compile=fast`) from the command line or from Sublime Text 2.
+
 ---
 
 ### Future:
