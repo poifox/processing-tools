@@ -44,14 +44,11 @@
 			A tool by <a href="##author.url##">##author.name##</a> for the <a href="http://www.processing.org" target="_blank">Processing</a> programming environment.<br>
 			Last update, ##date##.
 			</p>
-			<p>##tool.sentence##</p>
-			<p>##tool.paragraph##<p>
-		
-			<h2>Usage</h2>
 			<p>
-				To use Templater just <a href="#download">download and install</a> the tool and restart Processing. <br />
-				From the app menu select <strong>Tools > Templater: save as template</strong>; you'll be prompted for a file name before saving.
-				The saved templates are ready to be used with <a href="http://poifox.com/bootstrap">Bootstrap</a>.
+			##tool.sentence##<br>
+			##tool.paragraph##<br>
+			Feel free to replace this paragraph with a description of the tool.<br>
+			Contributed libraries are developed, documented, and maintained by members of the Processing community. Further directions are included with each tool. For feedback and support, please post to the Discourse. We strongly encourage all libraries to be open source, but not all of them are.
 			</p>
 			</div>
 			
@@ -61,11 +58,11 @@
 			<h2>Download</h2>
 			<p>
 			Download ##tool.name## version ##tool.prettyVersion## (##tool.version##) in 
-			<a href="./download/##tool.name##-##tool.version##.zip">.zip format</a>.
+			<a href="./download/##project.name##-##tool.version##.zip">.zip format</a>.
 			</p>
 			<h2>Installation</h2>
 			<p>
-			Unzip and put the extracted ##tool.name## folder into the <strong>tools</strong> folder of your Processing sketches. Reference and examples are included in the ##tool.name## folder.
+			Unzip and put the extracted ##project.name## folder into the tools folder of your Processing sketches. Reference and examples are included in the ##project.name## folder.
 			</p>
 			</div>	
 			
@@ -136,15 +133,5 @@
 			<p>by ##author.name##, ##copyright##.</p>
 		</div>
 	</div>
-	<script type="text/javascript">
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-26462354-1']);
-	  _gaq.push(['_trackPageview']);
-	  (function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-	</script>
 </body>
 </html>
